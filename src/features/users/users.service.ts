@@ -1,8 +1,9 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {UpdateUserDto} from './dto/update-user.dto';
-import db, {InMemoryDB, USERS_TABLE} from '../../core/db';
+import db, {InMemoryDB, tableNames, USERS_TABLE} from '../../core/db';
 import {CreateUserDto} from './dto/create-user.dto';
 import {User} from './entities/user.entity';
+import {IUser} from "../../shared/interfaces/user";
 
 @Injectable()
 export class UsersService {
@@ -23,19 +24,19 @@ export class UsersService {
     return User.toSource(user);
   }
 
-  async findAll() {
-    const users = await this.db.getAllEntities(USERS_TABLE);
+  async findAll(): Promise<IUser[]> {
+    const users = await this.db.getAllEntities<tableNames, IUser>(USERS_TABLE);
 
     return users.map((user) => User.toSource(user));
   }
 
   async findOne(id: string) {
-    const user = await this.db.getEntity(USERS_TABLE, id);
+    const user = await this.db.getEntity<tableNames, IUser>(USERS_TABLE, id);
     return User.toSource(user);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.db.getEntity(USERS_TABLE, id);
+    const user = await this.db.getEntity<tableNames, IUser>(USERS_TABLE, id);
 
     if (user.password !== updateUserDto.oldPassowrd) {
       throw new HttpException('Incorrect oldPassowrd', HttpStatus.FORBIDDEN);
@@ -54,6 +55,6 @@ export class UsersService {
   async remove(id: string) {
     await this.db.removeEntity(USERS_TABLE, id);
 
-    return true;
+    return 'OK';
   }
 }

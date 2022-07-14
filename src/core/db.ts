@@ -1,13 +1,27 @@
 import { IUser } from '../shared/interfaces/user';
+import {Artist} from "../shared/interfaces/artist";
+import {CreateArtistDto} from "../features/artists/dto/create-artist.dto";
 
 export const USERS_TABLE = 'users';
+export const ARTISTS_TABLE = 'artists';
 
-type tableNames = typeof USERS_TABLE;
-type tableTypes = IUser;
+export type tableNames = typeof USERS_TABLE | typeof ARTISTS_TABLE;
+export type tableTypes = IUser | Artist | CreateArtistDto;
 
 interface MyDb {
   users: IUser[];
+  artists: Artist[];
 }
+//
+// type memoryDb = {
+//   [key in tableNames]: tableTypes[]
+// }
+//
+// const dbD: memoryDb = {
+//   [USERS_TABLE]: [ ],
+//   [ARTISTS_TABLE]: [],
+// };
+
 
 export class InMemoryDB implements MyDb {
   [USERS_TABLE]: IUser[] = [
@@ -20,17 +34,20 @@ export class InMemoryDB implements MyDb {
       updatedAt: Date.now(),
     },
   ];
+  [ARTISTS_TABLE]: Artist[] = [];
 
-  async getAllEntities<T extends tableNames>(
+  async getAllEntities<T extends tableNames, U extends tableTypes>(
     tableName: T,
-  ): Promise<tableTypes[]> {
+  ): Promise<U[]> {
+    // @ts-ignore
     return this[tableName];
   }
 
-  async getEntity<T extends tableNames>(
+  async getEntity<T extends tableNames, U>(
     tableName: T,
     idEntity: string,
-  ): Promise<tableTypes | undefined> {
+  ): Promise<U | undefined> {
+    // @ts-ignore
     return this[tableName].find(({ id }) => id === idEntity);
   }
 
@@ -38,13 +55,14 @@ export class InMemoryDB implements MyDb {
     tableName: T,
     item: tableTypes,
   ): Promise<void> {
+    // @ts-ignore
     this[tableName].push(item);
   }
 
-  async updateEntity<T extends tableNames>(
+  async updateEntity<T extends tableNames, U extends tableTypes>(
     tableName: T,
-    user: tableTypes,
-  ): Promise<tableTypes> {
+    user: U,
+  ): Promise<U> {
     this[tableName] = this[tableName].map((dbUser) => {
       if (dbUser.id === user.id) {
         return {
@@ -63,6 +81,7 @@ export class InMemoryDB implements MyDb {
     tableName: T,
     idEntity: string,
   ): Promise<void> {
+    // @ts-ignore
     this[tableName] = this[tableName].filter(
       (dbUser) => dbUser.id !== idEntity,
     );
