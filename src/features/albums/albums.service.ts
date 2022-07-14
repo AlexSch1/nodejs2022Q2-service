@@ -1,26 +1,62 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAlbumDto } from './dto/create-album.dto';
-import { UpdateAlbumDto } from './dto/update-album.dto';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {CreateAlbumDto} from './dto/create-album.dto';
+import {UpdateAlbumDto} from './dto/update-album.dto';
+import db, {ALBUM_TABLE, InMemoryDB, tableNames,} from '../../core/db';
+import {v4} from "uuid";
+import {Album} from "../../shared/interfaces/album";
 
 @Injectable()
-export class AlbumsService {
-  create(createAlbumDto: CreateAlbumDto) {
-    return 'This action adds a new album';
+export class AlbumsService {db: InMemoryDB;
+
+  constructor() {
+    this.db = db;
   }
 
-  findAll() {
-    return `This action returns all albums`;
+  async artistExist(id: string) {
+    const album = await this.db.getEntity(ALBUM_TABLE, id);
+    return !!album;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} album`;
+  async create(createAlbumDto: CreateAlbumDto) {
+    const newAlbum = {
+      ...createAlbumDto,
+      id: v4(),
+    }
+    await this.db.createEntity(ALBUM_TABLE, newAlbum);
+
+    return newAlbum;
   }
 
-  update(id: number, updateAlbumDto: UpdateAlbumDto) {
-    return `This action updates a #${id} album`;
+  async findAll() {
+    return await this.db.getAllEntities<tableNames, Album>(ALBUM_TABLE);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} album`;
+  async findOne(id: string) {
+    if (!(await this.artistExist(id))) {
+      throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
+    }
+    return await this.db.getEntity<tableNames, Album>(ALBUM_TABLE, id);
+  }
+
+  async update(id: string, updateAlbumDto: UpdateAlbumDto) {
+    if (!(await this.artistExist(id))) {
+      throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
+    }
+
+    const artist = await this.db.getEntity<tableNames, Album>(
+        ALBUM_TABLE,
+        id,
+    );
+
+    return this.db.updateEntity(ALBUM_TABLE, {
+      ...artist,
+      ...updateAlbumDto,
+    });
+  }
+
+  async remove(id: string) {
+    await this.db.removeEntity(ALBUM_TABLE, id);
+
+    return 'OK';
   }
 }

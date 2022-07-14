@@ -1,16 +1,20 @@
 import { IUser } from '../shared/interfaces/user';
 import {Artist} from "../shared/interfaces/artist";
 import {CreateArtistDto} from "../features/artists/dto/create-artist.dto";
+import {CreateAlbumDto} from "../features/albums/dto/create-album.dto";
+import {Album} from "../shared/interfaces/album";
 
 export const USERS_TABLE = 'users';
 export const ARTISTS_TABLE = 'artists';
+export const ALBUM_TABLE = 'album';
 
-export type tableNames = typeof USERS_TABLE | typeof ARTISTS_TABLE;
-export type tableTypes = IUser | Artist | CreateArtistDto;
+export type tableNames = typeof USERS_TABLE | typeof ARTISTS_TABLE | typeof ALBUM_TABLE;
+export type tableTypes = IUser | Artist | CreateArtistDto | CreateAlbumDto | Album;
 
 interface MyDb {
   users: IUser[];
   artists: Artist[];
+  album: Album[];
 }
 //
 // type memoryDb = {
@@ -35,6 +39,7 @@ export class InMemoryDB implements MyDb {
     },
   ];
   [ARTISTS_TABLE]: Artist[] = [];
+  [ALBUM_TABLE]: Album[] = [];
 
   async getAllEntities<T extends tableNames, U extends tableTypes>(
     tableName: T,

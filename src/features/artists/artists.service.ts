@@ -40,7 +40,7 @@ export class ArtistsService {
   }
 
   async update(id: string, updateArtistDto: UpdateArtistDto) {
-    if (!(await this.artistExist)) {
+    if (!(await this.artistExist(id))) {
       throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
     }
 
