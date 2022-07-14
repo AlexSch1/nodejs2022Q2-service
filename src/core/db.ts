@@ -3,29 +3,23 @@ import {Artist} from "../shared/interfaces/artist";
 import {CreateArtistDto} from "../features/artists/dto/create-artist.dto";
 import {CreateAlbumDto} from "../features/albums/dto/create-album.dto";
 import {Album} from "../shared/interfaces/album";
+import {CreateTrackDto} from "../features/tracks/dto/create-track.dto";
+import {Track} from "../shared/interfaces/track";
 
 export const USERS_TABLE = 'users';
 export const ARTISTS_TABLE = 'artists';
 export const ALBUM_TABLE = 'album';
+export const TRACKS_TABLE = 'tracks';
 
-export type tableNames = typeof USERS_TABLE | typeof ARTISTS_TABLE | typeof ALBUM_TABLE;
-export type tableTypes = IUser | Artist | CreateArtistDto | CreateAlbumDto | Album;
+export type tableNames = typeof USERS_TABLE | typeof ARTISTS_TABLE | typeof ALBUM_TABLE | typeof TRACKS_TABLE;
+export type tableTypes = IUser | Artist | CreateArtistDto | CreateAlbumDto | Album | CreateTrackDto | Track;
 
 interface MyDb {
   users: IUser[];
   artists: Artist[];
   album: Album[];
+  tracks: Track[];
 }
-//
-// type memoryDb = {
-//   [key in tableNames]: tableTypes[]
-// }
-//
-// const dbD: memoryDb = {
-//   [USERS_TABLE]: [ ],
-//   [ARTISTS_TABLE]: [],
-// };
-
 
 export class InMemoryDB implements MyDb {
   [USERS_TABLE]: IUser[] = [
@@ -39,6 +33,7 @@ export class InMemoryDB implements MyDb {
     },
   ];
   [ARTISTS_TABLE]: Artist[] = [];
+  [TRACKS_TABLE]: Track[] = [];
   [ALBUM_TABLE]: Album[] = [];
 
   async getAllEntities<T extends tableNames, U extends tableTypes>(

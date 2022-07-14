@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Param, Delete, UseGuards, Put} from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
+import {UuidGuard} from "../../shared/guards/uuid.guard";
 
 @Controller('tracks')
 export class TracksController {
@@ -18,17 +19,20 @@ export class TracksController {
   }
 
   @Get(':id')
+  @UseGuards(UuidGuard)
   findOne(@Param('id') id: string) {
-    return this.tracksService.findOne(+id);
+    return this.tracksService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
+  @UseGuards(UuidGuard)
   update(@Param('id') id: string, @Body() updateTrackDto: UpdateTrackDto) {
-    return this.tracksService.update(+id, updateTrackDto);
+    return this.tracksService.update(id, updateTrackDto);
   }
 
   @Delete(':id')
+  @UseGuards(UuidGuard)
   remove(@Param('id') id: string) {
-    return this.tracksService.remove(+id);
+    return this.tracksService.remove(id);
   }
 }

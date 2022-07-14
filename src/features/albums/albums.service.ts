@@ -12,7 +12,7 @@ export class AlbumsService {db: InMemoryDB;
     this.db = db;
   }
 
-  async artistExist(id: string) {
+  async albumExist(id: string) {
     const album = await this.db.getEntity(ALBUM_TABLE, id);
     return !!album;
   }
@@ -32,14 +32,14 @@ export class AlbumsService {db: InMemoryDB;
   }
 
   async findOne(id: string) {
-    if (!(await this.artistExist(id))) {
+    if (!(await this.albumExist(id))) {
       throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
     }
     return await this.db.getEntity<tableNames, Album>(ALBUM_TABLE, id);
   }
 
   async update(id: string, updateAlbumDto: UpdateAlbumDto) {
-    if (!(await this.artistExist(id))) {
+    if (!(await this.albumExist(id))) {
       throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
     }
 
