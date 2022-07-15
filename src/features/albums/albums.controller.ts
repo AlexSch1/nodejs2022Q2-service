@@ -1,8 +1,18 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put, HttpCode} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Put,
+  HttpCode,
+} from '@nestjs/common';
 import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import {UuidGuard} from "../../shared/guards/uuid.guard";
+import { UuidGuard } from '../../shared/guards/uuid.guard';
 
 @Controller('album')
 export class AlbumsController {

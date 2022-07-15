@@ -1,8 +1,18 @@
-import {Controller, Get, Post, Body, Param, Delete, UseGuards, Put, HttpCode} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+  Put,
+  HttpCode,
+} from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import {UuidGuard} from "../../shared/guards/uuid.guard";
+import { UuidGuard } from '../../shared/guards/uuid.guard';
 
 @Controller('track')
 export class TracksController {

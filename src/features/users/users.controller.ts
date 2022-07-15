@@ -6,7 +6,10 @@ import {
   Param,
   Delete,
   UseGuards,
-  Put, HttpCode, HttpException, HttpStatus,
+  Put,
+  HttpCode,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -37,7 +40,7 @@ export class UsersController {
 
   @Put(':id')
   @UseGuards(UuidGuard)
- async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const user = await this.usersService.userExist(id);
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);

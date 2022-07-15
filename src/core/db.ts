@@ -73,7 +73,7 @@ export class InMemoryDB implements MyDb {
     return this[FAVORITES_TABLE];
   }
 
- async addToFavourites(name: tableNames, id: string) {
+  async addToFavourites(name: tableNames, id: string) {
     this[FAVORITES_TABLE][name].push(id);
   }
 
@@ -87,31 +87,23 @@ export class InMemoryDB implements MyDb {
     );
   }
 
-  async getAllEntities<T extends tableNames, U extends tableTypes>(
-    tableName: T,
-  ): Promise<U[]> {
-    // @ts-ignore
+  async getAllEntities<U extends tableTypes>(tableName: any): Promise<U[]> {
     return this[tableName];
   }
 
-  async getEntity<T extends tableNames, U>(
-    tableName: T,
+  async getEntity<U extends tableTypes>(
+    tableName: any,
     idEntity: string,
   ): Promise<U | undefined> {
-    // @ts-ignore
     return this[tableName].find(({ id }) => id === idEntity);
   }
 
-  async createEntity<T extends tableNames>(
-    tableName: T,
-    item: tableTypes,
-  ): Promise<void> {
-    // @ts-ignore
+  async createEntity(tableName: any, item: tableTypes): Promise<void> {
     this[tableName].push(item);
   }
 
-  async updateEntity<T extends tableNames, U extends tableTypes>(
-    tableName: T,
+  async updateEntity<U extends tableTypes>(
+    tableName: any,
     user: U,
   ): Promise<U> {
     this[tableName] = this[tableName].map((dbUser) => {
@@ -128,11 +120,7 @@ export class InMemoryDB implements MyDb {
     return user;
   }
 
-  async removeEntity<T extends tableNames>(
-    tableName: T,
-    idEntity: string,
-  ): Promise<void> {
-    // @ts-ignore
+  async removeEntity(tableName: any, idEntity: string): Promise<void> {
     this[tableName] = this[tableName].filter(
       (dbUser) => dbUser.id !== idEntity,
     );

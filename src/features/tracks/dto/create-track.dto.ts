@@ -1,4 +1,4 @@
-import {IsInt, IsNotEmpty, IsOptional, IsString} from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { IsNullable } from '../../albums/dto/create-album.dto';
 
 export class CreateTrackDto {

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import db, { TRACKS_TABLE, InMemoryDB, tableNames } from '../../core/db';
+import db, { TRACKS_TABLE, InMemoryDB } from '../../core/db';
 import { v4 } from 'uuid';
 import { Artist } from '../../shared/interfaces/artist';
 import { Track } from '../../shared/interfaces/track';
@@ -31,14 +31,14 @@ export class TracksService {
   }
 
   async findAll() {
-    return await this.db.getAllEntities<tableNames, Track>(TRACKS_TABLE);
+    return await this.db.getAllEntities<Track>(TRACKS_TABLE);
   }
 
   async findOne(id: string) {
     if (!(await this.trackExist(id))) {
       throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
     }
-    return await this.db.getEntity<tableNames, Artist>(TRACKS_TABLE, id);
+    return await this.db.getEntity<Artist>(TRACKS_TABLE, id);
   }
 
   async update(id: string, updateTrackDto: UpdateTrackDto) {
@@ -46,7 +46,7 @@ export class TracksService {
       throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
     }
 
-    const track = await this.db.getEntity<tableNames, Track>(TRACKS_TABLE, id);
+    const track = await this.db.getEntity<Track>(TRACKS_TABLE, id);
 
     return this.db.updateEntity(TRACKS_TABLE, {
       ...track,

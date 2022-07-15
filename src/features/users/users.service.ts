@@ -1,10 +1,10 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import {UpdateUserDto} from './dto/update-user.dto';
-import db, {InMemoryDB, tableNames, USERS_TABLE} from '../../core/db';
-import {CreateUserDto} from './dto/create-user.dto';
-import {User} from './entities/user.entity';
-import {IUser} from "../../shared/interfaces/user";
-import {FavoritesService} from "../favorites/favorites.service";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { UpdateUserDto } from './dto/update-user.dto';
+import db, { InMemoryDB, USERS_TABLE } from '../../core/db';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
+import { IUser } from '../../shared/interfaces/user';
+import { FavoritesService } from '../favorites/favorites.service';
 
 @Injectable()
 export class UsersService {
@@ -26,18 +26,18 @@ export class UsersService {
   }
 
   async findAll(): Promise<IUser[]> {
-    const users = await this.db.getAllEntities<tableNames, IUser>(USERS_TABLE);
+    const users = await this.db.getAllEntities<IUser>(USERS_TABLE);
 
     return users.map((user) => User.toSource(user));
   }
 
   async findOne(id: string) {
-    const user = await this.db.getEntity<tableNames, IUser>(USERS_TABLE, id);
+    const user = await this.db.getEntity<IUser>(USERS_TABLE, id);
     return User.toSource(user);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.db.getEntity<tableNames, IUser>(USERS_TABLE, id);
+    const user = await this.db.getEntity<IUser>(USERS_TABLE, id);
 
     if (user.password !== updateUserDto.oldPassword) {
       throw new HttpException('Incorrect oldPassword', HttpStatus.FORBIDDEN);

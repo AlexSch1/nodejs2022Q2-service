@@ -3,7 +3,7 @@ import { IUser } from '../../../shared/interfaces/user';
 
 export class User implements IUser {
   id: string = v4();
-  version: number = 1;
+  version = 1;
   createdAt: number = Date.now();
   updatedAt: number = Date.now();
 

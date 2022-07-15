@@ -5,7 +5,6 @@ import db, {
   ALBUMS_TABLE,
   ARTISTS_TABLE,
   InMemoryDB,
-  tableNames,
   TRACKS_TABLE,
 } from '../../core/db';
 import { Artist } from '../../shared/interfaces/artist';
@@ -35,14 +34,14 @@ export class ArtistsService {
   }
 
   async findAll(): Promise<Artist[]> {
-    return await this.db.getAllEntities<tableNames, Artist>(ARTISTS_TABLE);
+    return await this.db.getAllEntities<Artist>(ARTISTS_TABLE);
   }
 
   async findOne(id: string) {
     if (!(await this.artistExist(id))) {
       throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
     }
-    return await this.db.getEntity<tableNames, Artist>(ARTISTS_TABLE, id);
+    return await this.db.getEntity<Artist>(ARTISTS_TABLE, id);
   }
 
   async update(id: string, updateArtistDto: UpdateArtistDto) {
@@ -50,10 +49,7 @@ export class ArtistsService {
       throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
     }
 
-    const artist = await this.db.getEntity<tableNames, Artist>(
-      ARTISTS_TABLE,
-      id,
-    );
+    const artist = await this.db.getEntity<Artist>(ARTISTS_TABLE, id);
 
     return this.db.updateEntity(ARTISTS_TABLE, {
       ...artist,
