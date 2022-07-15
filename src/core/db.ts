@@ -1,23 +1,37 @@
 import { IUser } from '../shared/interfaces/user';
-import {Artist} from "../shared/interfaces/artist";
-import {CreateArtistDto} from "../features/artists/dto/create-artist.dto";
-import {CreateAlbumDto} from "../features/albums/dto/create-album.dto";
-import {Album} from "../shared/interfaces/album";
-import {CreateTrackDto} from "../features/tracks/dto/create-track.dto";
-import {Track} from "../shared/interfaces/track";
+import { Artist } from '../shared/interfaces/artist';
+import { CreateArtistDto } from '../features/artists/dto/create-artist.dto';
+import { CreateAlbumDto } from '../features/albums/dto/create-album.dto';
+import { Album } from '../shared/interfaces/album';
+import { CreateTrackDto } from '../features/tracks/dto/create-track.dto';
+import { Track } from '../shared/interfaces/track';
+import { Favorites } from '../shared/interfaces/favorites';
 
 export const USERS_TABLE = 'users';
 export const ARTISTS_TABLE = 'artists';
-export const ALBUM_TABLE = 'album';
+export const ALBUMS_TABLE = 'albums';
 export const TRACKS_TABLE = 'tracks';
+export const FAVORITES_TABLE = 'favorites';
 
-export type tableNames = typeof USERS_TABLE | typeof ARTISTS_TABLE | typeof ALBUM_TABLE | typeof TRACKS_TABLE;
-export type tableTypes = IUser | Artist | CreateArtistDto | CreateAlbumDto | Album | CreateTrackDto | Track;
+export type tableNames =
+  | typeof USERS_TABLE
+  | typeof ARTISTS_TABLE
+  | typeof ALBUMS_TABLE
+  | typeof TRACKS_TABLE;
+
+export type tableTypes =
+  | IUser
+  | Artist
+  | CreateArtistDto
+  | CreateAlbumDto
+  | Album
+  | CreateTrackDto
+  | Track;
 
 interface MyDb {
   users: IUser[];
   artists: Artist[];
-  album: Album[];
+  albums: Album[];
   tracks: Track[];
 }
 
@@ -34,7 +48,28 @@ export class InMemoryDB implements MyDb {
   ];
   [ARTISTS_TABLE]: Artist[] = [];
   [TRACKS_TABLE]: Track[] = [];
-  [ALBUM_TABLE]: Album[] = [];
+  [ALBUMS_TABLE]: Album[] = [];
+  [FAVORITES_TABLE]: Favorites = {
+    artists: [],
+    albums: [],
+    tracks: [],
+  };
+
+ async getFavs() {
+    return this[FAVORITES_TABLE];
+  }
+
+  addToFavourites(name: tableNames, id: string) {
+    this[FAVORITES_TABLE][name].push(id);
+  }
+
+  hasFavs(name: tableNames, idToCheck: string): string {
+    return this[FAVORITES_TABLE][name].includes(idToCheck);
+  }
+
+  removeFromFavourites(name: tableNames, idToRemove: string) {
+    this[FAVORITES_TABLE][name] = this[FAVORITES_TABLE][name].filter((id) => id !== idToRemove);
+  }
 
   async getAllEntities<T extends tableNames, U extends tableTypes>(
     tableName: T,
