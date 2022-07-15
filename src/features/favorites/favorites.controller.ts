@@ -9,25 +9,25 @@ export class FavoritesController {
 
   @Get()
   findFavs() {
-    return  this.favoritesService.findFavs();
+    return this.favoritesService.findFavs();
   }
 
   @Post('/track/:id')
   @HttpCode(201)
   @UseGuards(UuidGuard)
-  addTack(@Param() id: string) {
+  addTack(@Param('id') id: string) {
     return this.favoritesService.addToFavouritesTrack(id);
   }
-  @Post('/album/:id')
+  @Post('album/:id')
   @HttpCode(201)
   @UseGuards(UuidGuard)
-  addAlbum(@Param() id: string) {
+  addAlbum(@Param('id') id: string) {
     return this.favoritesService.addToFavouritesAlbum(id);
   }
   @Post('/artist/:id')
   @HttpCode(201)
   @UseGuards(UuidGuard)
-  addArtist(@Param() id: string) {
+  addArtist(@Param('id') id: string) {
     return this.favoritesService.addToFavouritesArtist(id);
   }
 

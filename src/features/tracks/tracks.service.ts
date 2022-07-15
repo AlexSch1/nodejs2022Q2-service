@@ -1,10 +1,10 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import {CreateTrackDto} from './dto/create-track.dto';
-import {UpdateTrackDto} from './dto/update-track.dto';
-import db, {TRACKS_TABLE, InMemoryDB, tableNames} from '../../core/db';
-import {v4} from "uuid";
-import {Artist} from "../../shared/interfaces/artist";
-import {Track} from "../../shared/interfaces/track";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CreateTrackDto } from './dto/create-track.dto';
+import { UpdateTrackDto } from './dto/update-track.dto';
+import db, { TRACKS_TABLE, InMemoryDB, tableNames } from '../../core/db';
+import { v4 } from 'uuid';
+import { Artist } from '../../shared/interfaces/artist';
+import { Track } from '../../shared/interfaces/track';
 
 @Injectable()
 export class TracksService {
@@ -23,10 +23,10 @@ export class TracksService {
     const newTrack = {
       ...createTrackDto,
       id: v4(),
-    }
+    };
 
     await this.db.createEntity(TRACKS_TABLE, newTrack);
-    
+
     return newTrack;
   }
 
@@ -46,10 +46,7 @@ export class TracksService {
       throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
     }
 
-    const track = await this.db.getEntity<tableNames, Track>(
-        TRACKS_TABLE,
-        id,
-    );
+    const track = await this.db.getEntity<tableNames, Track>(TRACKS_TABLE, id);
 
     return this.db.updateEntity(TRACKS_TABLE, {
       ...track,
@@ -59,6 +56,8 @@ export class TracksService {
 
   async remove(id: string) {
     await this.db.removeEntity(TRACKS_TABLE, id);
+    this.db.removeFromFavourites(TRACKS_TABLE, id);
+
     return 'OK';
   }
 }

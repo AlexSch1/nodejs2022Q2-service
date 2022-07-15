@@ -9,6 +9,10 @@ export class FavoritesService {
     this.db = db;
   }
 
+ async resetFavs() {
+    return this.db.resetFavs();
+  }
+
   async findFavs() {
     const rawFavs = await this.db.getFavs();
 
@@ -68,7 +72,7 @@ export class FavoritesService {
       );
     }
 
-    this.db.addToFavourites(TRACKS_TABLE, id);
+    this.db.removeFromFavourites(TRACKS_TABLE, id);
 
     return 'Track was removed from favorites';
   }
@@ -80,7 +84,7 @@ export class FavoritesService {
       );
     }
 
-    this.db.addToFavourites(ALBUMS_TABLE, id);
+    this.db.removeFromFavourites(ALBUMS_TABLE, id);
 
     return 'Album was removed from favorites';
   }
@@ -92,7 +96,7 @@ export class FavoritesService {
       );
     }
 
-    this.db.addToFavourites(ARTISTS_TABLE, id);
+    this.db.removeFromFavourites(ARTISTS_TABLE, id);
 
     return 'Artist was removed from favorites';
   }

@@ -55,7 +55,30 @@ export class InMemoryDB implements MyDb {
     tracks: [],
   };
 
- async getFavs() {
+  unrefIds(tableName: tableNames, id: string, resource: string) {
+    this[tableName] = this[tableName].map((item) => {
+      const dbResource = item[`${resource}Id`];
+
+      if (dbResource !== id) {
+        return item;
+      }
+
+      return {
+        ...item,
+        [`${resource}Id`]: null,
+      };
+    });
+  }
+
+  async resetFavs() {
+    this[FAVORITES_TABLE] = {
+      artists: [],
+      albums: [],
+      tracks: [],
+    };
+  }
+
+  async getFavs() {
     return this[FAVORITES_TABLE];
   }
 
@@ -68,7 +91,9 @@ export class InMemoryDB implements MyDb {
   }
 
   removeFromFavourites(name: tableNames, idToRemove: string) {
-    this[FAVORITES_TABLE][name] = this[FAVORITES_TABLE][name].filter((id) => id !== idToRemove);
+    this[FAVORITES_TABLE][name] = this[FAVORITES_TABLE][name].filter(
+      (id) => id !== idToRemove,
+    );
   }
 
   async getAllEntities<T extends tableNames, U extends tableTypes>(

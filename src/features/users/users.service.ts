@@ -4,12 +4,13 @@ import db, {InMemoryDB, tableNames, USERS_TABLE} from '../../core/db';
 import {CreateUserDto} from './dto/create-user.dto';
 import {User} from './entities/user.entity';
 import {IUser} from "../../shared/interfaces/user";
+import {FavoritesService} from "../favorites/favorites.service";
 
 @Injectable()
 export class UsersService {
   db: InMemoryDB;
 
-  constructor() {
+  constructor(private favoritesService: FavoritesService) {
     this.db = db;
   }
 
@@ -54,6 +55,7 @@ export class UsersService {
 
   async remove(id: string) {
     await this.db.removeEntity(USERS_TABLE, id);
+    await this.favoritesService.resetFavs();
 
     return 'OK';
   }

@@ -1,9 +1,15 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
-import {CreateArtistDto} from './dto/create-artist.dto';
-import {UpdateArtistDto} from './dto/update-artist.dto';
-import db, {ARTISTS_TABLE, InMemoryDB, tableNames,} from '../../core/db';
-import {Artist} from '../../shared/interfaces/artist';
-import {v4} from "uuid";
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CreateArtistDto } from './dto/create-artist.dto';
+import { UpdateArtistDto } from './dto/update-artist.dto';
+import db, {
+  ALBUMS_TABLE,
+  ARTISTS_TABLE,
+  InMemoryDB,
+  tableNames,
+  TRACKS_TABLE,
+} from '../../core/db';
+import { Artist } from '../../shared/interfaces/artist';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class ArtistsService {
@@ -22,7 +28,7 @@ export class ArtistsService {
     const newArtist = {
       ...createArtistDto,
       id: v4(),
-    }
+    };
     await this.db.createEntity(ARTISTS_TABLE, newArtist);
 
     return newArtist;
@@ -56,8 +62,11 @@ export class ArtistsService {
   }
 
   async remove(id: string) {
-      await this.db.removeEntity(ARTISTS_TABLE, id);
+    await this.db.removeEntity(ARTISTS_TABLE, id);
+    this.db.removeFromFavourites(ARTISTS_TABLE, id);
+    this.db.unrefIds(TRACKS_TABLE, id, 'artist');
+    this.db.unrefIds(ALBUMS_TABLE, id, 'artist');
 
-      return 'OK';
+    return 'OK';
   }
 }

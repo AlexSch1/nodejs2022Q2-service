@@ -1,7 +1,7 @@
 import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {CreateAlbumDto} from './dto/create-album.dto';
 import {UpdateAlbumDto} from './dto/update-album.dto';
-import db, {ALBUMS_TABLE, InMemoryDB, tableNames,} from '../../core/db';
+import db, {ALBUMS_TABLE, InMemoryDB, tableNames, TRACKS_TABLE,} from '../../core/db';
 import {v4} from "uuid";
 import {Album} from "../../shared/interfaces/album";
 
@@ -56,6 +56,8 @@ export class AlbumsService {db: InMemoryDB;
 
   async remove(id: string) {
     await this.db.removeEntity(ALBUMS_TABLE, id);
+    this.db.removeFromFavourites(ALBUMS_TABLE, id);
+    this.db.unrefIds(TRACKS_TABLE, id, 'album');
 
     return 'OK';
   }
