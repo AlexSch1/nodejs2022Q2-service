@@ -43,7 +43,7 @@ export class TracksService {
 
   async update(id: string, updateTrackDto: UpdateTrackDto) {
     if (!(await this.trackExist(id))) {
-      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
     }
 
     const track = await this.db.getEntity<tableNames, Track>(TRACKS_TABLE, id);
@@ -55,9 +55,13 @@ export class TracksService {
   }
 
   async remove(id: string) {
+    if (!(await this.trackExist(id))) {
+      throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
+    }
+
     await this.db.removeEntity(TRACKS_TABLE, id);
     this.db.removeFromFavourites(TRACKS_TABLE, id);
 
-    return 'OK';
+    return;
   }
 }

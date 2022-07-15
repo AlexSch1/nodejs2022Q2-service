@@ -55,10 +55,14 @@ export class AlbumsService {db: InMemoryDB;
   }
 
   async remove(id: string) {
+    if (!(await this.albumExist(id))) {
+      throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
+    }
+
     await this.db.removeEntity(ALBUMS_TABLE, id);
     this.db.removeFromFavourites(ALBUMS_TABLE, id);
     this.db.unrefIds(TRACKS_TABLE, id, 'album');
 
-    return 'OK';
+    return;
   }
 }

@@ -6,7 +6,7 @@ import {
   Param,
   Delete,
   UseGuards,
-  Put,
+  Put, HttpCode, HttpException, HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,7 +15,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
 import { UserGuard } from '../../shared/guards/user.guard';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -36,12 +36,17 @@ export class UsersController {
   }
 
   @Put(':id')
-  @UseGuards(UuidGuard, UserGuard)
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  @UseGuards(UuidGuard)
+ async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const user = await this.usersService.userExist(id);
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
+  @HttpCode(204)
   @UseGuards(UuidGuard, UserGuard)
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);

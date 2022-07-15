@@ -39,7 +39,7 @@ export class ArtistsService {
   }
 
   async findOne(id: string) {
-    if (!(await this.artistExist)) {
+    if (!(await this.artistExist(id))) {
       throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
     }
     return await this.db.getEntity<tableNames, Artist>(ARTISTS_TABLE, id);
@@ -62,11 +62,15 @@ export class ArtistsService {
   }
 
   async remove(id: string) {
+    if (!(await this.artistExist(id))) {
+      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
+    }
+
     await this.db.removeEntity(ARTISTS_TABLE, id);
     this.db.removeFromFavourites(ARTISTS_TABLE, id);
     this.db.unrefIds(TRACKS_TABLE, id, 'artist');
     this.db.unrefIds(ALBUMS_TABLE, id, 'artist');
 
-    return 'OK';
+    return;
   }
 }

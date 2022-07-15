@@ -1,10 +1,10 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put, HttpCode} from '@nestjs/common';
 import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import {UuidGuard} from "../../shared/guards/uuid.guard";
 
-@Controller('artists')
+@Controller('artist')
 export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 
@@ -31,6 +31,7 @@ export class ArtistsController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   @UseGuards(UuidGuard)
   remove(@Param('id') id: string) {
     return this.artistsService.remove(id);

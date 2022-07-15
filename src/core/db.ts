@@ -36,16 +36,7 @@ interface MyDb {
 }
 
 export class InMemoryDB implements MyDb {
-  [USERS_TABLE]: IUser[] = [
-    {
-      id: '2b6febbf-fcf1-412b-be44-9008c14fa694',
-      login: 'login',
-      password: '123',
-      version: 1,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    },
-  ];
+  [USERS_TABLE]: IUser[] = [];
   [ARTISTS_TABLE]: Artist[] = [];
   [TRACKS_TABLE]: Track[] = [];
   [ALBUMS_TABLE]: Album[] = [];
@@ -82,7 +73,7 @@ export class InMemoryDB implements MyDb {
     return this[FAVORITES_TABLE];
   }
 
-  addToFavourites(name: tableNames, id: string) {
+ async addToFavourites(name: tableNames, id: string) {
     this[FAVORITES_TABLE][name].push(id);
   }
 
@@ -90,7 +81,7 @@ export class InMemoryDB implements MyDb {
     return this[FAVORITES_TABLE][name].includes(idToCheck);
   }
 
-  removeFromFavourites(name: tableNames, idToRemove: string) {
+  async removeFromFavourites(name: tableNames, idToRemove: string) {
     this[FAVORITES_TABLE][name] = this[FAVORITES_TABLE][name].filter(
       (id) => id !== idToRemove,
     );

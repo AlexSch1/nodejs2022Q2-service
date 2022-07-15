@@ -39,8 +39,8 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user = await this.db.getEntity<tableNames, IUser>(USERS_TABLE, id);
 
-    if (user.password !== updateUserDto.oldPassowrd) {
-      throw new HttpException('Incorrect oldPassowrd', HttpStatus.FORBIDDEN);
+    if (user.password !== updateUserDto.oldPassword) {
+      throw new HttpException('Incorrect oldPassword', HttpStatus.FORBIDDEN);
     }
 
     const updatedUser = await this.db.updateEntity(USERS_TABLE, {
@@ -57,6 +57,6 @@ export class UsersService {
     await this.db.removeEntity(USERS_TABLE, id);
     await this.favoritesService.resetFavs();
 
-    return 'OK';
+    return;
   }
 }
