@@ -2,8 +2,7 @@ version: '3'
 
 services:
   nodeapp:
-    build: .
-#    image: alexdv/nodejs2022q2:node-app
+    image: alexdv/nodejs2022q2:node-app
     ports:
       - ${PORT}:${PORT}
     volumes:
@@ -19,8 +18,7 @@ services:
       PORT: ${PORT}
 
   postgres:
-    build: ./db
-#    image: alexdv/nodejs2022q2:db
+    image: alexdv/nodejs2022q2:db
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
