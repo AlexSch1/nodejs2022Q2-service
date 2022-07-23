@@ -15,10 +15,10 @@ export class TrackEntity implements ITrack {
   duration: number;
 
   @ManyToOne(() => ArtistEntity, { onDelete: 'SET NULL' })
-  @Column('uuid', { name: 'artistId', nullable: true })
+  @Column('uuid', { name: 'artistIdId', nullable: true })
   artistId: string | null;
 
   @ManyToOne(() => AlbumEntity, { onDelete: 'SET NULL' })
-  @Column('uuid', { name: 'albumId', nullable: true })
+  @Column('uuid', { name: 'albumIdId', nullable: true })
   albumId: string | null;
 }
