@@ -1,19 +1,27 @@
 import { IUser } from '../../../shared/interfaces/user';
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  VersionColumn
+} from "typeorm";
 import {UserDto} from "../dto/user.dto";
 
 @Entity({ name: 'user' })
-export class UserEntity implements IUser {
+export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @VersionColumn()
   version: number;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
+  @UpdateDateColumn()
   updatedAt: Date;
 
   @Column('varchar')
@@ -22,10 +30,7 @@ export class UserEntity implements IUser {
   @Column('varchar')
   password: string;
 
-  // static
   toResponse(): UserDto {
-    // if (!user) return undefined;
-
     const { password, ...userDto } = this;
 
     return userDto;

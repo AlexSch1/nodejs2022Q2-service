@@ -1,21 +1,17 @@
 import {
   IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
+  IsNotEmpty, IsOptional,
+  IsString, IsUUID,
   ValidateIf,
   ValidationOptions,
 } from 'class-validator';
+import {IAlbumDto} from "../../../shared/interfaces/album";
 
 export function IsNullable(validationOptions?: ValidationOptions) {
   return ValidateIf((_object, value) => value !== null, validationOptions);
 }
 
-export class CreateAlbumDto {
-  @IsString()
-  @IsOptional()
-  id: string; // uuid v4
-
+export class CreateAlbumDto implements IAlbumDto{
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -24,7 +20,7 @@ export class CreateAlbumDto {
   @IsInt()
   year: number;
 
-  @IsString()
-  @IsNullable()
-  artistId: string | null; // refers to Artist
+  @IsOptional()
+  @IsUUID()
+  artistId: string | null;
 }

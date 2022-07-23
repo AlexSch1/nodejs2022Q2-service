@@ -1,6 +1,8 @@
-export interface Album {
-  id: string; // uuid v4
+export interface IAlbum {
+  id: string;
   name: string;
   year: number;
-  artistId: string | null; // refers to Artist
+  artistId: string | null;
 }
+
+export type IAlbumDto = Omit<IAlbum, 'id'>;

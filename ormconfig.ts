@@ -1,6 +1,10 @@
 import  { config } from 'dotenv';
 import { join } from 'path';
 import { ConnectionOptions } from 'typeorm';
+import {UserEntity} from "./src/features/users/entities/user.entity";
+import {ArtistEntity} from "./src/features/artists/entities/artist.entity";
+import {AlbumEntity} from "./src/features/albums/entities/album.entity";
+import {TrackEntity} from "./src/features/tracks/entities/track.entity";
 
 config({
   path: join(__dirname, '../.env'),
@@ -22,13 +26,14 @@ export default {
   reconnectInterval: 1000,
   migrationsTableName: 'migrations',
   // autoLoadEntities: true,
-  // entities: [UserEntity, TaskEntity, BoardEntity, ColumnEntity],
+  entities: [UserEntity, ArtistEntity, AlbumEntity, TrackEntity],
   // entities: [],
   // migrations: ['dist/migration/**/*.{ts,js}'],
-  entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+  // entities: [join(__dirname, './src/features/users/entities/', '*.entity.{ts,js}')],
+  // entities: [join(__dirname, '**', '*.entity.{ts,js}')],
   migrations: [join(__dirname, 'migration', '*.{ts,js}')],
   cli: {
-    migrationsDir: join(__dirname, './src/migration'),
+    migrationsDir: join(__dirname, 'migration'),
   },  // cli: {
   //   entitiesDir: 'src/entities',
   //   migrationsDir: 'src/migration',

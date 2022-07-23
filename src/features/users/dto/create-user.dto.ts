@@ -14,11 +14,11 @@ export class CreateUserDto implements IUserDto {
   @IsOptional()
   version: number;
 
-  @IsDate()
+  @IsInt()
   @IsOptional()
   createdAt: Date;
 
-  @IsDate()
+  @IsInt()
   @IsOptional()
   updatedAt: Date;
 }

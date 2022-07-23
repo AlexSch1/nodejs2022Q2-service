@@ -1,67 +1,48 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateTrackDto } from './dto/create-track.dto';
-import { UpdateTrackDto } from './dto/update-track.dto';
-import db, { TRACKS_TABLE, InMemoryDB } from '../../core/db';
-import { v4 } from 'uuid';
-import { Artist } from '../../shared/interfaces/artist';
-import { Track } from '../../shared/interfaces/track';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { TrackEntity } from './entities/track.entity';
+import {CreateTrackDto} from "./dto/create-track.dto";
+import {UpdateTrackDto} from "./dto/update-track.dto";
 
 @Injectable()
 export class TracksService {
-  db: InMemoryDB;
+  constructor(
+    @InjectRepository(TrackEntity)
+    private trackRepository: Repository<TrackEntity>,
+  ) {}
 
-  constructor() {
-    this.db = db;
-  }
-
-  async trackExist(id: string) {
-    const track = await this.db.getEntity(TRACKS_TABLE, id);
-    return !!track;
-  }
+  // async trackExist(id: string) {
+  //   const track = await this.db.getEntity(TRACKS_TABLE, id);
+  //   return !!track;
+  // }
 
   async create(createTrackDto: CreateTrackDto) {
-    const newTrack = {
-      ...createTrackDto,
-      id: v4(),
-    };
+    const newTrack = this.trackRepository.create(createTrackDto);
 
-    await this.db.createEntity(TRACKS_TABLE, newTrack);
-
-    return newTrack;
+    return await this.trackRepository.save(newTrack);
   }
 
   async findAll() {
-    return await this.db.getAllEntities<Track>(TRACKS_TABLE);
+    return this.trackRepository.find();
   }
 
   async findOne(id: string) {
-    if (!(await this.trackExist(id))) {
-      throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
-    }
-    return await this.db.getEntity<Artist>(TRACKS_TABLE, id);
+    return this.trackRepository.findOne({ where: { id } });
   }
 
   async update(id: string, updateTrackDto: UpdateTrackDto) {
-    if (!(await this.trackExist(id))) {
-      throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
-    }
+    const track = await this.findOne(id);
 
-    const track = await this.db.getEntity<Track>(TRACKS_TABLE, id);
+    if (!track) return;
 
-    return this.db.updateEntity(TRACKS_TABLE, {
+    return await this.trackRepository.save({
       ...track,
       ...updateTrackDto,
     });
   }
 
   async remove(id: string) {
-    if (!(await this.trackExist(id))) {
-      throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
-    }
-
-    await this.db.removeEntity(TRACKS_TABLE, id);
-    this.db.removeFromFavourites(TRACKS_TABLE, id);
-
-    return;
+    return Boolean((await this.trackRepository.delete(id)).affected);
   }
 }

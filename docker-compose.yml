@@ -21,8 +21,8 @@ services:
     image: alexdv/nodejs2022q2:db
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
-    volumes:
-      - ./data:/var/lib/postgresql/data
+#    volumes:
+#      - ./data:/var/lib/postgresql/data
     networks:
       - mynet
     environment:

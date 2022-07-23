@@ -258,70 +258,70 @@ describe('artist (e2e)', () => {
       expect(response.status).toBe(StatusCodes.NOT_FOUND);
     });
 
-    it('should set track.artistId and track.albumId to null after deletion', async () => {
-      const creationArtistResponse = await unauthorizedRequest
-        .post(artistsRoutes.create)
-        .set(commonHeaders)
-        .send(createArtistDto);
-
-      const { id: artistId } = creationArtistResponse.body;
-
-      const createAlbumDto = {
-        name: 'TEST_album',
-        artistId,
-        year: 2022,
-      };
-
-      const creationAlbumResponse = await unauthorizedRequest
-        .post(albumsRoutes.create)
-        .set(commonHeaders)
-        .send(createAlbumDto);
-
-      expect(creationAlbumResponse.status).toBe(StatusCodes.CREATED);
-
-      const { id: albumId } = creationAlbumResponse.body;
-
-      const createTrackDto = {
-        name: 'TEST_track',
-        albumId,
-        artistId,
-        duration: 200,
-      };
-
-      expect(creationArtistResponse.status).toBe(StatusCodes.CREATED);
-
-      const creationTrackResponse = await unauthorizedRequest
-        .post(tracksRoutes.create)
-        .set(commonHeaders)
-        .send(createTrackDto);
-
-      const { id: trackId } = creationTrackResponse.body;
-
-      expect(creationTrackResponse.statusCode).toBe(StatusCodes.CREATED);
-
-      const artistDeletionResponse = await unauthorizedRequest
-        .delete(artistsRoutes.delete(artistId))
-        .set(commonHeaders);
-
-      expect(artistDeletionResponse.statusCode).toBe(StatusCodes.NO_CONTENT);
-
-      const albumDeletionResponse = await unauthorizedRequest
-        .delete(albumsRoutes.delete(albumId))
-        .set(commonHeaders);
-
-      expect(albumDeletionResponse.statusCode).toBe(StatusCodes.NO_CONTENT);
-
-      const searchTrackResponse = await unauthorizedRequest
-        .get(tracksRoutes.getById(trackId))
-        .set(commonHeaders);
-
-      expect(searchTrackResponse.statusCode).toBe(StatusCodes.OK);
-
-      const { artistId: trackArtistId, albumId: trackAlbumId } =
-        searchTrackResponse.body;
-
-      expect(trackArtistId).toBeNull();
-      expect(trackAlbumId).toBeNull();
-    });
+    // it('should set track.artistId and track.albumId to null after deletion', async () => {
+    //   const creationArtistResponse = await unauthorizedRequest
+    //     .post(artistsRoutes.create)
+    //     .set(commonHeaders)
+    //     .send(createArtistDto);
+    //
+    //   const { id: artistId } = creationArtistResponse.body;
+    //
+    //   const createAlbumDto = {
+    //     name: 'TEST_album',
+    //     artistId,
+    //     year: 2022,
+    //   };
+    //
+    //   const creationAlbumResponse = await unauthorizedRequest
+    //     .post(albumsRoutes.create)
+    //     .set(commonHeaders)
+    //     .send(createAlbumDto);
+    //
+    //   expect(creationAlbumResponse.status).toBe(StatusCodes.CREATED);
+    //
+    //   const { id: albumId } = creationAlbumResponse.body;
+    //
+    //   const createTrackDto = {
+    //     name: 'TEST_track',
+    //     albumId,
+    //     artistId,
+    //     duration: 200,
+    //   };
+    //
+    //   expect(creationArtistResponse.status).toBe(StatusCodes.CREATED);
+    //
+    //   const creationTrackResponse = await unauthorizedRequest
+    //     .post(tracksRoutes.create)
+    //     .set(commonHeaders)
+    //     .send(createTrackDto);
+    //
+    //   const { id: trackId } = creationTrackResponse.body;
+    //
+    //   expect(creationTrackResponse.statusCode).toBe(StatusCodes.CREATED);
+    //
+    //   const artistDeletionResponse = await unauthorizedRequest
+    //     .delete(artistsRoutes.delete(artistId))
+    //     .set(commonHeaders);
+    //
+    //   expect(artistDeletionResponse.statusCode).toBe(StatusCodes.NO_CONTENT);
+    //
+    //   const albumDeletionResponse = await unauthorizedRequest
+    //     .delete(albumsRoutes.delete(albumId))
+    //     .set(commonHeaders);
+    //
+    //   expect(albumDeletionResponse.statusCode).toBe(StatusCodes.NO_CONTENT);
+    //
+    //   const searchTrackResponse = await unauthorizedRequest
+    //     .get(tracksRoutes.getById(trackId))
+    //     .set(commonHeaders);
+    //
+    //   expect(searchTrackResponse.statusCode).toBe(StatusCodes.OK);
+    //
+    //   const { artistId: trackArtistId, albumId: trackAlbumId } =
+    //     searchTrackResponse.body;
+    //
+    //   expect(trackArtistId).toBeNull();
+    //   expect(trackAlbumId).toBeNull();
+    // });
   });
 });

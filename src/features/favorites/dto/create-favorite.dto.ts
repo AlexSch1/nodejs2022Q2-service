@@ -1,1 +1,1 @@
-export class CreateFavoriteDto {}
+// export class CreateFavoriteDto {}
