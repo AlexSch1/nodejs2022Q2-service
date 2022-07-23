@@ -1,11 +1,7 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { IUser } from '../../../shared/interfaces/user';
+import {IsDate, IsInt, IsNotEmpty, IsOptional, IsString} from 'class-validator';
+import {IUserDto} from '../../../shared/interfaces/user';
 
-export class CreateUserDto implements IUser {
-  @IsString()
-  @IsOptional()
-  id: string;
-
+export class CreateUserDto implements IUserDto {
   @IsString()
   @IsNotEmpty()
   login: string;
@@ -18,11 +14,11 @@ export class CreateUserDto implements IUser {
   @IsOptional()
   version: number;
 
-  @IsInt()
+  @IsDate()
   @IsOptional()
-  createdAt: number;
+  createdAt: Date;
 
-  @IsInt()
+  @IsDate()
   @IsOptional()
-  updatedAt: number;
+  updatedAt: Date;
 }

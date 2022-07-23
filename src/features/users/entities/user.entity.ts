@@ -1,16 +1,33 @@
-import { v4 } from 'uuid';
 import { IUser } from '../../../shared/interfaces/user';
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {UserDto} from "../dto/user.dto";
 
-export class User implements IUser {
-  id: string = v4();
-  version = 1;
-  createdAt: number = Date.now();
-  updatedAt: number = Date.now();
+@Entity({ name: 'user' })
+export class UserEntity implements IUser {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  constructor(public login: string, public password: string) {}
+  @Column()
+  version: number;
 
-  static toSource(user: IUser) {
-    const { password, ...userDto } = user;
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
+
+  @Column('varchar')
+  login: string;
+
+  @Column('varchar')
+  password: string;
+
+  // static
+  toResponse(): UserDto {
+    // if (!user) return undefined;
+
+    const { password, ...userDto } = this;
+
     return userDto;
   }
 }

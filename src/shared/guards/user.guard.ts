@@ -13,10 +13,10 @@ export class UserGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
 
-    const user = await this.userService.userExist(request.params.id);
-    if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-    }
+    // const user = await this.userService.userExist(request.params.id);
+    // if (!user) {
+    //   throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    // }
     return true;
   }
 }
