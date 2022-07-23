@@ -23,7 +23,8 @@
     "scan-db": "docker scan alexdv/nodejs2022q2:db",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js --config=ormconfig.ts",
     "migration:generate": "npm run typeorm migration:generate -- -n initDB",
-    "typeorm:g": "typeorm migration:create -n UserMigration -d src/migration"
+    "migration:run": "npm run typeorm migration:run",
+    "migration:revert": "npm run typeorm migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",

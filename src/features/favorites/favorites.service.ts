@@ -1,17 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-// import db, {
-//   ALBUMS_TABLE,
-//   ARTISTS_TABLE,
-//   InMemoryDB,
-//   TRACKS_TABLE,
-// } from '../../core/db';
+
 
 @Injectable()
 export class FavoritesService {
-  // db: InMemoryDB;
   //
   // constructor() {
-  //   this.db = db;
   // }
   //
   // async resetFavs() {
