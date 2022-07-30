@@ -20,7 +20,7 @@ export class ArtistsService {
   }
 
   async findOne(id: string) {
-    return this.artistRepository.findOne(id);
+    return this.artistRepository.findOne({ where: { id } });
   }
 
   async update(id: string, updateArtistDto: UpdateArtistDto) {
