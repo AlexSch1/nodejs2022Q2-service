@@ -1,4 +1,4 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from 'typeorm';
 import { IFavorites } from '../../../shared/interfaces/favorites';
 import {TrackEntity} from "../../tracks/entities/track.entity";
 import {AlbumEntity} from "../../albums/entities/album.entity";
@@ -9,21 +9,15 @@ export class FavoriteEntity implements IFavorites {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToMany<ArtistEntity>(() => ArtistEntity, (artist: ArtistEntity): string => artist.id, {
-    cascade: true,
-  })
-  @Column('uuid', { array: true })
-  artists: string[];
+  @ManyToMany(() => ArtistEntity, { cascade: true })
+  @JoinTable()
+  artists: ArtistEntity[];
 
-  @OneToMany<AlbumEntity>(() => AlbumEntity, (album: AlbumEntity): string => album.id, {
-    cascade: true,
-  })
-  @Column('uuid', { array: true })
-  albums: string[];
+  @ManyToMany(() => AlbumEntity, { cascade: true })
+  @JoinTable()
+  albums: AlbumEntity[];
 
-  @OneToMany<TrackEntity>(() => TrackEntity, (track: TrackEntity): string => track.id, {
-    cascade: true,
-  })
-  @Column('uuid', { array: true })
-  tracks: string[];
+  @ManyToMany(() => TrackEntity, { cascade: true })
+  @JoinTable()
+  tracks: TrackEntity[];
 }
