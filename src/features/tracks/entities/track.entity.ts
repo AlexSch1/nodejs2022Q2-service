@@ -1,7 +1,7 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ITrack } from '../../../shared/interfaces/track';
-import {ArtistEntity} from "../../artists/entities/artist.entity";
-import {AlbumEntity} from "../../albums/entities/album.entity";
+import { ArtistEntity } from '../../artists/entities/artist.entity';
+import { AlbumEntity } from '../../albums/entities/album.entity';
 
 @Entity({ name: 'track' })
 export class TrackEntity implements ITrack {

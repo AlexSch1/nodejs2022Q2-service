@@ -1,6 +1,12 @@
-import {IsUUID, IsString, IsNotEmpty, IsInt, IsOptional, IsDate} from 'class-validator';
-import {IUser} from "../../../shared/interfaces/user";
-
+import {
+  IsUUID,
+  IsString,
+  IsNotEmpty,
+  IsInt,
+  IsOptional,
+  IsDate,
+} from 'class-validator';
+import { IUser } from '../../../shared/interfaces/user';
 
 export class UserDto implements Partial<IUser> {
   @IsUUID()

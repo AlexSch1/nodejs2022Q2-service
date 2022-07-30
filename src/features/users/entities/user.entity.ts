@@ -1,14 +1,12 @@
-import { IUser } from '../../../shared/interfaces/user';
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  VersionColumn
-} from "typeorm";
-import {UserDto} from "../dto/user.dto";
+  VersionColumn,
+} from 'typeorm';
+import { UserDto } from '../dto/user.dto';
 
 @Entity({ name: 'user' })
 export class UserEntity {

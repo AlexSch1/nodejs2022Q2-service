@@ -1,5 +1,11 @@
-import {IsInt, IsNotEmpty, IsOptional, IsString, IsUUID} from 'class-validator';
-import {ITrackDto} from "../../../shared/interfaces/track";
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { ITrackDto } from '../../../shared/interfaces/track';
 
 export class CreateTrackDto implements ITrackDto {
   @IsString()

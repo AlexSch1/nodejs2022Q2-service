@@ -7,7 +7,9 @@ import {
   Delete,
   UseGuards,
   Put,
-  HttpCode, HttpException, HttpStatus,
+  HttpCode,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
@@ -19,12 +21,12 @@ export class TracksController {
   constructor(private readonly tracksService: TracksService) {}
 
   @Post()
- async create(@Body() createTrackDto: CreateTrackDto) {
+  async create(@Body() createTrackDto: CreateTrackDto) {
     const track = await this.tracksService.create(createTrackDto);
     if (!track) {
       throw new HttpException(
-          'Unable to create track',
-          HttpStatus.INTERNAL_SERVER_ERROR,
+        'Unable to create track',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
     return track;
@@ -48,7 +50,10 @@ export class TracksController {
 
   @Put(':id')
   @UseGuards(UuidGuard)
- async update(@Param('id') id: string, @Body() updateTrackDto: UpdateTrackDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateTrackDto: UpdateTrackDto,
+  ) {
     const track = await this.tracksService.update(id, updateTrackDto);
     if (!track) {
       throw new HttpException('track not found', HttpStatus.NOT_FOUND);
@@ -59,7 +64,7 @@ export class TracksController {
   @Delete(':id')
   @HttpCode(204)
   @UseGuards(UuidGuard)
- async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     if (!(await this.tracksService.remove(id))) {
       throw new HttpException('Track  not found', HttpStatus.NOT_FOUND);
     }

@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
-import {FavoritesEnum} from "../../shared/interfaces/favorites";
+import { FavoritesEnum } from '../../shared/interfaces/favorites';
 
 @Controller('favs')
 export class FavoritesController {

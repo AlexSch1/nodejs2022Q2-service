@@ -7,7 +7,9 @@ import {
   Delete,
   UseGuards,
   Put,
-  HttpCode, HttpException, HttpStatus,
+  HttpCode,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
@@ -19,24 +21,26 @@ export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 
   @Post()
- async create(@Body() createArtistDto: CreateArtistDto) {
+  async create(@Body() createArtistDto: CreateArtistDto) {
     const artist = await this.artistsService.create(createArtistDto);
     if (!artist) {
-      throw new HttpException('Unable to create artist', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Unable to create artist',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
 
-    return artist
-
+    return artist;
   }
 
   @Get()
- async findAll() {
+  async findAll() {
     return await this.artistsService.findAll();
   }
 
   @Get(':id')
   @UseGuards(UuidGuard)
- async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     // return this.artistsService.findOne(id);
 
     const artist = await this.artistsService.findOne(id);
@@ -49,7 +53,10 @@ export class ArtistsController {
 
   @Put(':id')
   @UseGuards(UuidGuard)
-  async update(@Param('id') id: string, @Body() updateArtistDto: UpdateArtistDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateArtistDto: UpdateArtistDto,
+  ) {
     // return this.artistsService.update(id, updateArtistDto);
 
     const artist = await this.artistsService.update(id, updateArtistDto);
@@ -62,13 +69,10 @@ export class ArtistsController {
   @Delete(':id')
   @HttpCode(204)
   @UseGuards(UuidGuard)
- async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     // return this.artistsService.remove(id);
     if (!(await this.artistsService.remove(id))) {
-      throw new HttpException(
-          'Artist not found',
-          HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
     }
   }
 }

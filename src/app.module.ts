@@ -6,7 +6,7 @@ import { ArtistsModule } from './features/artists/artists.module';
 import { AlbumsModule } from './features/albums/albums.module';
 import { TracksModule } from './features/tracks/tracks.module';
 import { FavoritesModule } from './features/favorites/favorites.module';
-import {TypeOrmModule} from "@nestjs/typeorm";
+import { TypeOrmModule } from '@nestjs/typeorm';
 import config from '../ormconfig';
 
 @Module({

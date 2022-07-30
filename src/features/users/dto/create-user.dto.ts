@@ -1,5 +1,5 @@
-import {IsDate, IsInt, IsNotEmpty, IsOptional, IsString} from 'class-validator';
-import {IUserDto} from '../../../shared/interfaces/user';
+import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IUserDto } from '../../../shared/interfaces/user';
 
 export class CreateUserDto implements IUserDto {
   @IsString()

@@ -22,7 +22,7 @@ export class UsersService {
   async findAll() {
     const users = await this.usersRepository.find();
 
-    return users.map(u => u.toResponse())
+    return users.map((u) => u.toResponse());
   }
 
   async findOne(id: string) {

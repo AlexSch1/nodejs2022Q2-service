@@ -9,6 +9,6 @@ export class ArtistEntity implements IArtist {
   @Column()
   name: string;
 
-  @Column({type: 'boolean', default: false})
+  @Column({ type: 'boolean', default: false })
   grammy: boolean;
 }

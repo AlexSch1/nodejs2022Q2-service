@@ -12,7 +12,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import {CreateUserDto, } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
 import { UserGuard } from '../../shared/guards/user.guard';
@@ -56,7 +56,6 @@ export class UsersController {
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<UserDto> {
-
     const user = await this.usersService.update(id, updateUserDto);
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -69,10 +68,7 @@ export class UsersController {
   @UseGuards(UuidGuard, UserGuard)
   async remove(@Param('id') id: string): Promise<void> {
     if (!(await this.usersService.remove(id))) {
-      throw new HttpException(
-        'User  not found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('User  not found', HttpStatus.NOT_FOUND);
     }
   }
 }

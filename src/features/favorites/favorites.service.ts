@@ -44,8 +44,10 @@ export class FavoritesService {
 
       return id;
     } catch (e) {
-      throw new HttpException('UNPROCESSABLE_ENTITY', HttpStatus.UNPROCESSABLE_ENTITY);
-
+      throw new HttpException(
+        'UNPROCESSABLE_ENTITY',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
     }
   }
 
