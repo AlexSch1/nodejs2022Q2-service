@@ -18,6 +18,7 @@ services:
       - mynet
     environment:
       PORT: ${PORT}
+      DB_HOST: host.docker.internal
 
   postgres:
     image: alexdv/nodejs2022q2:db
@@ -28,6 +29,7 @@ services:
     networks:
       - mynet
     environment:
+      POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
@@ -35,3 +37,6 @@ services:
 networks:
   mynet:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.220.0/24
