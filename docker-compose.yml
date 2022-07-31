@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nodeapp:
-    image: alexdv/nodejs2022q2:node-app
+    image: alexdv/nodejs2022q2:node
     ports:
       - ${PORT}:${PORT}
     volumes:
