@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  nodeapp:
+    image: alexdv/nodejs2022q2:node
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - ./src:/usr/app/src
+      - ./logs:/usr/app/logs
+    restart:
+      always
+    depends_on:
+      - postgres
+    networks:
+      - mynet
+    environment:
+      PORT: ${PORT}
+
+  postgres:
+    image: alexdv/nodejs2022q2:db
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - mynet
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+networks:
+  mynet:
+    driver: bridge
