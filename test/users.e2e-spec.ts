@@ -178,8 +178,8 @@ describe('Users (e2e)', () => {
       expect(validate(updatedId)).toBe(true);
       expect(createdId).toBe(updatedId);
       expect(version).toBe(2);
-      // expect(typeof createdAt).toBe('number');
-      // expect(typeof updatedAt).toBe('number');
+      expect(typeof createdAt).toBe('number');
+      expect(typeof updatedAt).toBe('number');
       expect(createdAt === updatedAt).toBe(false);
 
       const updateResponse2 = await unauthorizedRequest
