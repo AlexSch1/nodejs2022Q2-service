@@ -1,3 +1,28 @@
+# Docker
+link to docker hub with images https://hub.docker.com/repository/docker/alexdv/nodejs2022q2
+
+npm script for vulnerabilities scanning
+
+```
+ npm run scan-node
+ npm run scan-db
+```
+
+####Start app
+1. add .env
+2. start db local or on docker
+3. start app ```npm run start:dev ```
+
+
+####Start app in docker
+
+npm script for start app in docker (db + app)
+
+```
+  docker-compose up
+```
+
+
 # Home Library Service
 
 ## Prerequisites
