@@ -8,6 +8,8 @@ npm script for vulnerabilities scanning
  npm run scan-db
 ```
 
+Run app ``docker-compose up``
+
 # Home Library Service
 
 ## Prerequisites
