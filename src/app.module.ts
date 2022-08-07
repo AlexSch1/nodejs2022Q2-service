@@ -17,6 +17,7 @@ import config from '../ormconfig';
     AlbumsModule,
     TracksModule,
     FavoritesModule,
+    // AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

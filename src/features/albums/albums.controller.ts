@@ -15,12 +15,14 @@ import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
+import {AuthGuard} from "../auth/auth-guard";
 
 @Controller('album')
 export class AlbumsController {
   constructor(private readonly albumsService: AlbumsService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   async create(@Body() createAlbumDto: CreateAlbumDto) {
     const album = await this.albumsService.create(createAlbumDto);
     if (!album) {
@@ -33,12 +35,13 @@ export class AlbumsController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   findAll() {
     return this.albumsService.findAll();
   }
 
   @Get(':id')
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async findOne(@Param('id') id: string) {
     const album = await this.albumsService.findOne(id);
 
@@ -49,7 +52,7 @@ export class AlbumsController {
   }
 
   @Put(':id')
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async update(
     @Param('id') id: string,
     @Body() updateAlbumDto: UpdateAlbumDto,
@@ -65,7 +68,7 @@ export class AlbumsController {
 
   @Delete(':id')
   @HttpCode(204)
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async remove(@Param('id') id: string) {
     // return this.albumsService.remove(id);
 

@@ -17,6 +17,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
 import { UserGuard } from '../../shared/guards/user.guard';
 import { UserDto } from './dto/user.dto';
+import {AuthGuard} from "../auth/auth-guard";
 
 @Controller('user')
 export class UsersController {
@@ -35,6 +36,7 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   async findAll() {
     return await this.usersService.findAll();
   }
@@ -51,7 +53,7 @@ export class UsersController {
   }
 
   @Put(':id')
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,

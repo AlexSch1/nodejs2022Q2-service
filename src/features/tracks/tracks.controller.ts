@@ -15,12 +15,14 @@ import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
+import {AuthGuard} from "../auth/auth-guard";
 
 @Controller('track')
 export class TracksController {
   constructor(private readonly tracksService: TracksService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   async create(@Body() createTrackDto: CreateTrackDto) {
     const track = await this.tracksService.create(createTrackDto);
     if (!track) {
@@ -33,12 +35,13 @@ export class TracksController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   findAll() {
     return this.tracksService.findAll();
   }
 
   @Get(':id')
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async findOne(@Param('id') id: string) {
     const track = await this.tracksService.findOne(id);
 
@@ -49,7 +52,7 @@ export class TracksController {
   }
 
   @Put(':id')
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async update(
     @Param('id') id: string,
     @Body() updateTrackDto: UpdateTrackDto,
@@ -63,7 +66,7 @@ export class TracksController {
 
   @Delete(':id')
   @HttpCode(204)
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async remove(@Param('id') id: string) {
     if (!(await this.tracksService.remove(id))) {
       throw new HttpException('Track  not found', HttpStatus.NOT_FOUND);
