@@ -1,4 +1,10 @@
-import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
@@ -49,7 +55,7 @@ export class AuthService {
 
   async login({ login, password }: LoginDto) {
     const userDb = await this.validateUser(login, password);
-    console.log('userDb', userDb)
+    console.log('userDb', userDb);
 
     if (!userDb) {
       throw new HttpException('user not found', HttpStatus.FORBIDDEN);

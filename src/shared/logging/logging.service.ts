@@ -51,22 +51,22 @@ export class LogsService {
       const currentFile = files[files.length - 1];
 
       if (!currentFile) {
-        await this.createFile(logStr, 0, size, this.getFileName);
+        await this.createLogFile(logStr, 0, size, this.getFileName);
       } else {
         const lastFileStat = await stat(`src/logs/${currentFile}`);
 
         const lastFileSize = lastFileStat.size;
 
-        await this.createFile(logStr, lastFileSize, size, currentFile);
+        await this.createLogFile(logStr, lastFileSize, size, currentFile);
       }
     } catch (error) {
       await mkdir('src/logs');
 
-      await this.createFile(logStr, 0, size, this.getFileName);
+      await this.createLogFile(logStr, 0, size, this.getFileName);
     }
   }
 
-  async createFile(log, lastSize, size, file) {
+  async createLogFile(log, lastSize, size, file) {
     try {
       if (lastSize >= size - 1000) {
         await writeFile(`src/logs/${this.getFileName}`, log);

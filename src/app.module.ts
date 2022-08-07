@@ -8,7 +8,7 @@ import { TracksModule } from './features/tracks/tracks.module';
 import { FavoritesModule } from './features/favorites/favorites.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import config from '../ormconfig';
-import {LoggerModule} from "./shared/logging/logging.module";
+import { LoggerModule } from './shared/logging/logging.module';
 
 @Module({
   imports: [

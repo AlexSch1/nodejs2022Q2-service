@@ -1,6 +1,8 @@
 import {
   CanActivate,
-  ExecutionContext, forwardRef, Inject,
+  ExecutionContext,
+  forwardRef,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,8 +11,9 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-      @Inject(forwardRef(() => AuthService))
-      private readonly authService: AuthService) {}
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
+  ) {}
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();

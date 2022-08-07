@@ -17,7 +17,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
 import { UserGuard } from '../../shared/guards/user.guard';
 import { UserDto } from './dto/user.dto';
-import {AuthGuard} from "../auth/auth-guard";
+import { AuthGuard } from '../auth/auth-guard';
 
 @Controller('user')
 export class UsersController {

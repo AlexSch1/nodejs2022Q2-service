@@ -15,7 +15,7 @@ import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
-import {AuthGuard} from "../auth/auth-guard";
+import { AuthGuard } from '../auth/auth-guard';
 
 @Controller('album')
 export class AlbumsController {

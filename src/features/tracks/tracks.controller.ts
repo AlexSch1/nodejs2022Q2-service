@@ -15,7 +15,7 @@ import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
-import {AuthGuard} from "../auth/auth-guard";
+import { AuthGuard } from '../auth/auth-guard';
 
 @Controller('track')
 export class TracksController {
