@@ -22,9 +22,9 @@ export class UserDto implements Partial<IUser> {
 
   @IsDate()
   @IsOptional()
-  createdAt: Date;
+  createdAt: number;
 
   @IsDate()
   @IsOptional()
-  updatedAt: Date;
+  updatedAt: number;
 }

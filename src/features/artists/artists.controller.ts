@@ -15,12 +15,14 @@ import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
+import { AuthGuard } from '../auth/auth-guard';
 
 @Controller('artist')
 export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   async create(@Body() createArtistDto: CreateArtistDto) {
     const artist = await this.artistsService.create(createArtistDto);
     if (!artist) {
@@ -34,12 +36,13 @@ export class ArtistsController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   async findAll() {
     return await this.artistsService.findAll();
   }
 
   @Get(':id')
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async findOne(@Param('id') id: string) {
     // return this.artistsService.findOne(id);
 
@@ -52,7 +55,7 @@ export class ArtistsController {
   }
 
   @Put(':id')
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async update(
     @Param('id') id: string,
     @Body() updateArtistDto: UpdateArtistDto,
@@ -68,7 +71,7 @@ export class ArtistsController {
 
   @Delete(':id')
   @HttpCode(204)
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async remove(@Param('id') id: string) {
     // return this.artistsService.remove(id);
     if (!(await this.artistsService.remove(id))) {

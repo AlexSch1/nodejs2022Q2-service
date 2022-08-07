@@ -16,9 +16,9 @@ export class CreateUserDto implements IUserDto {
 
   @IsInt()
   @IsOptional()
-  createdAt: Date;
+  createdAt: number;
 
   @IsInt()
   @IsOptional()
-  updatedAt: Date;
+  updatedAt: number;
 }
