@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "docker:up": "docker-compose up --build",
+    "docker:up": "docker-compose up",
     "docker:down": "docker-compose down",
     "prebuild": "rimraf dist",
     "build": "nest build",
