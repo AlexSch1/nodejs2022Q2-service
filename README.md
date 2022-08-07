@@ -1,3 +1,15 @@
+# Docker
+link to docker hub with images https://hub.docker.com/repository/docker/alexdv/nodejs2022q2
+
+npm script for vulnerabilities scanning
+
+```
+ npm run scan-node
+ npm run scan-db
+```
+
+Run app ``docker-compose up``
+
 # Home Library Service
 
 ## Prerequisites
