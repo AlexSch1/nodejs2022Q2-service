@@ -16,11 +16,6 @@ npm script for vulnerabilities scanning
 2. start db local or on docker
 3. start app ```npm run start:dev ```
 
-###Tests
-
-![alt text](./tests.png)
-
-
 ####Start app in docker
 
 npm script for start app in docker (db + app)
