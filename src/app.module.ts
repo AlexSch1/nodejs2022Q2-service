@@ -8,6 +8,7 @@ import { TracksModule } from './features/tracks/tracks.module';
 import { FavoritesModule } from './features/favorites/favorites.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import config from '../ormconfig';
+import {LoggerModule} from "./shared/logging/logging.module";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import config from '../ormconfig';
     TracksModule,
     FavoritesModule,
     // AuthModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
