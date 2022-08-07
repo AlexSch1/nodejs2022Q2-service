@@ -8,7 +8,7 @@ import {
   VersionColumn,
 } from 'typeorm';
 import { UserDto } from '../dto/user.dto';
-import {genSaltSync, hashSync} from "bcryptjs";
+import { genSaltSync, hashSync } from 'bcryptjs';
 
 @Entity({ name: 'user' })
 export class UserEntity {

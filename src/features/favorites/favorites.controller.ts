@@ -10,7 +10,7 @@ import {
 import { FavoritesService } from './favorites.service';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
 import { FavoritesEnum } from '../../shared/interfaces/favorites';
-import {AuthGuard} from "../auth/auth-guard";
+import { AuthGuard } from '../auth/auth-guard';
 
 @Controller('favs')
 export class FavoritesController {

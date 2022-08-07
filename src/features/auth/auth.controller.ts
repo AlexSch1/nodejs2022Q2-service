@@ -1,13 +1,12 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus} from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import {LoginDto} from "./dto/login.dto";
-import {RegisterDto} from "./dto/register.dto";
-import {RefreshTokenDto} from "./dto/refresh-token-dto";
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { RefreshTokenDto } from './dto/refresh-token-dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
 
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
@@ -18,7 +17,7 @@ export class AuthController {
   @Post('/login')
   @HttpCode(HttpStatus.CREATED)
   async login(@Body() loginDto: LoginDto) {
-    console.log(loginDto)
+    console.log(loginDto);
     return this.authService.login(loginDto);
   }
 
