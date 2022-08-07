@@ -1,5 +1,3 @@
-import {isInstance} from "class-validator";
-
 export enum Levels {
 	ERROR = 'error',
 	WARM = 'warn',
@@ -29,15 +27,4 @@ export const getLogLevel = (l: string) => {
 		case Levels.ERROR:
 			return ['debug', 'verbose', 'log', 'warn', 'error'];
 	}
-};
-
-export const checkError = (context) => {
-	const instances = [
-		'NestApplication',
-		'RouterExplorer',
-		'RoutesResolver',
-		'InstanceLoader',
-		'NestFactory',
-	];
-	return instances.includes(context);
 };
