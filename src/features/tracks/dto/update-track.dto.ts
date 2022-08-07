@@ -1,21 +1,26 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { IsNullable } from '../../albums/dto/create-album.dto';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class UpdateTrackDto {
   @IsString()
   @IsOptional()
-  id: string; // uuid v4
+  id: string;
 
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @IsString()
-  @IsNullable()
+  @IsOptional()
+  @IsUUID()
   artistId: string | null;
 
-  @IsString()
-  @IsNullable()
+  @IsOptional()
+  @IsUUID()
   albumId: string | null;
 
   @IsInt()

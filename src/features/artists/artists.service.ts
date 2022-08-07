@@ -1,72 +1,36 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import db, {
-  ALBUMS_TABLE,
-  ARTISTS_TABLE,
-  InMemoryDB,
-  TRACKS_TABLE,
-} from '../../core/db';
-import { Artist } from '../../shared/interfaces/artist';
-import { v4 } from 'uuid';
+import { IArtist } from '../../shared/interfaces/artist';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ArtistEntity } from './entities/artist.entity';
 
 @Injectable()
 export class ArtistsService {
-  db: InMemoryDB;
-
-  constructor() {
-    this.db = db;
-  }
-
-  async artistExist(id: string) {
-    const artist = await this.db.getEntity(ARTISTS_TABLE, id);
-    return !!artist;
-  }
+  constructor(@InjectRepository(ArtistEntity) private artistRepository) {}
 
   async create(createArtistDto: CreateArtistDto) {
-    const newArtist = {
-      ...createArtistDto,
-      id: v4(),
-    };
-    await this.db.createEntity(ARTISTS_TABLE, newArtist);
+    const newArtist = this.artistRepository.create(createArtistDto);
 
-    return newArtist;
+    return await this.artistRepository.save(newArtist);
   }
 
-  async findAll(): Promise<Artist[]> {
-    return await this.db.getAllEntities<Artist>(ARTISTS_TABLE);
+  async findAll(): Promise<IArtist[]> {
+    return this.artistRepository.find();
   }
 
   async findOne(id: string) {
-    if (!(await this.artistExist(id))) {
-      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
-    }
-    return await this.db.getEntity<Artist>(ARTISTS_TABLE, id);
+    return this.artistRepository.findOne({ where: { id } });
   }
 
   async update(id: string, updateArtistDto: UpdateArtistDto) {
-    if (!(await this.artistExist(id))) {
-      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
-    }
+    const artist = await this.findOne(id);
+    if (!artist) return;
 
-    const artist = await this.db.getEntity<Artist>(ARTISTS_TABLE, id);
-
-    return this.db.updateEntity(ARTISTS_TABLE, {
-      ...artist,
-      ...updateArtistDto,
-    });
+    return this.artistRepository.save({ ...artist, ...updateArtistDto });
   }
 
   async remove(id: string) {
-    if (!(await this.artistExist(id))) {
-      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
-    }
-
-    await this.db.removeEntity(ARTISTS_TABLE, id);
-    this.db.removeFromFavourites(ARTISTS_TABLE, id);
-    this.db.unrefIds(TRACKS_TABLE, id, 'artist');
-    this.db.unrefIds(ALBUMS_TABLE, id, 'artist');
-
-    return;
+    return Boolean((await this.artistRepository.delete(id)).affected);
   }
 }

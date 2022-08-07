@@ -1,62 +1,52 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
-import db, { InMemoryDB, USERS_TABLE } from '../../core/db';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
-import { IUser } from '../../shared/interfaces/user';
-import { FavoritesService } from '../favorites/favorites.service';
+import { UserEntity } from './entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
-  db: InMemoryDB;
+  constructor(
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
+  ) {}
 
-  constructor(private favoritesService: FavoritesService) {
-    this.db = db;
+  async create(createUserDto: CreateUserDto): Promise<UserDto> {
+    const user = this.usersRepository.create(createUserDto);
+
+    return (await this.usersRepository.save(user)).toResponse();
   }
 
-  async userExist(id: string) {
-    const user = await this.db.getEntity(USERS_TABLE, id);
-    return !!user;
-  }
+  async findAll() {
+    const users = await this.usersRepository.find();
 
-  async create(createUserDto: CreateUserDto) {
-    const user = new User(createUserDto.login, createUserDto.password);
-    await this.db.createEntity(USERS_TABLE, user);
-    return User.toSource(user);
-  }
-
-  async findAll(): Promise<IUser[]> {
-    const users = await this.db.getAllEntities<IUser>(USERS_TABLE);
-
-    return users.map((user) => User.toSource(user));
+    return users.map((u) => u.toResponse());
   }
 
   async findOne(id: string) {
-    const user = await this.db.getEntity<IUser>(USERS_TABLE, id);
-    return User.toSource(user);
+    return this.usersRepository.findOne({ where: { id } });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.db.getEntity<IUser>(USERS_TABLE, id);
+    const user = await this.findOne(id);
+
+    if (!user) return;
 
     if (user.password !== updateUserDto.oldPassword) {
       throw new HttpException('Incorrect oldPassword', HttpStatus.FORBIDDEN);
     }
 
-    const updatedUser = await this.db.updateEntity(USERS_TABLE, {
+    const { password, ...userResp } = await this.usersRepository.save({
       ...user,
-      version: ++user.version,
       password: updateUserDto.newPassword,
-      updatedAt: Date.now(),
     });
 
-    return User.toSource(updatedUser);
+    return userResp;
   }
 
   async remove(id: string) {
-    await this.db.removeEntity(USERS_TABLE, id);
-    await this.favoritesService.resetFavs();
-
-    return;
+    return Boolean((await this.usersRepository.delete(id)).affected);
   }
 }

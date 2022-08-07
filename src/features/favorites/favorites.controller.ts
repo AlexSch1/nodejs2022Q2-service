@@ -9,51 +9,55 @@ import {
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
+import { FavoritesEnum } from '../../shared/interfaces/favorites';
 
 @Controller('favs')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
-
   @Get()
-  findFavs() {
-    return this.favoritesService.findFavs();
+  getFavorites() {
+    return this.favoritesService.getFavorites();
   }
 
-  @Post('/track/:id')
-  @HttpCode(201)
+  @Post('track/:id')
   @UseGuards(UuidGuard)
-  addTack(@Param('id') id: string) {
-    return this.favoritesService.addToFavouritesTrack(id);
-  }
-  @Post('album/:id')
   @HttpCode(201)
-  @UseGuards(UuidGuard)
-  addAlbum(@Param('id') id: string) {
-    return this.favoritesService.addToFavouritesAlbum(id);
-  }
-  @Post('/artist/:id')
-  @HttpCode(201)
-  @UseGuards(UuidGuard)
-  addArtist(@Param('id') id: string) {
-    return this.favoritesService.addToFavouritesArtist(id);
+  addTrack(@Param('id') id: string) {
+    return this.favoritesService.add(FavoritesEnum.Tracks, id);
   }
 
-  @Delete('/track/:id')
+  @Delete('track/:id')
   @UseGuards(UuidGuard)
   @HttpCode(204)
   removeTrack(@Param('id') id: string) {
-    return this.favoritesService.removeTrackFromFavourites(id);
+    return this.favoritesService.remove(FavoritesEnum.Tracks, id);
   }
-  @Delete('/artist/:id')
+
+  @Post('artist/:id')
+  @UseGuards(UuidGuard)
+  @HttpCode(201)
+  addArtist(@Param('id') id: string) {
+    return this.favoritesService.add(FavoritesEnum.Artists, id);
+  }
+
+  @Delete('artist/:id')
   @UseGuards(UuidGuard)
   @HttpCode(204)
   removeArtist(@Param('id') id: string) {
-    return this.favoritesService.removeArtistFromFavourites(id);
+    return this.favoritesService.remove(FavoritesEnum.Artists, id);
   }
-  @Delete('/album/:id')
+
+  @Post('album/:id')
+  @UseGuards(UuidGuard)
+  @HttpCode(201)
+  addAlbum(@Param('id') id: string) {
+    return this.favoritesService.add(FavoritesEnum.Albums, id);
+  }
+
+  @Delete('album/:id')
   @UseGuards(UuidGuard)
   @HttpCode(204)
   removeAlbum(@Param('id') id: string) {
-    return this.favoritesService.removeAlbumFromFavourites(id);
+    return this.favoritesService.remove(FavoritesEnum.Albums, id);
   }
 }

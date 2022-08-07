@@ -8,7 +8,20 @@ npm script for vulnerabilities scanning
  npm run scan-db
 ```
 
-Run app ``docker-compose up``
+<<<<<<< HEAD
+####Start app
+1. add .env
+2. start db local or on docker
+3. start app ```npm run start:dev ```
+
+
+####Start app in docker
+
+npm script for start app in docker (db + app)
+
+```
+  docker-compose up
+```
 
 # Home Library Service
 

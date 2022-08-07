@@ -1,5 +1,7 @@
-export interface Artist {
-  id: string; // uuid v4
+export interface IArtist {
+  id: string;
   name: string;
   grammy: boolean;
 }
+
+export type IArtistDto = Omit<IArtist, 'id'>;

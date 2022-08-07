@@ -1,5 +1,15 @@
-export interface Favorites {
-  artists: string[]; // favorite artists ids
-  albums: string[]; // favorite albums ids
-  tracks: string[]; // favorite tracks ids
+import { IArtist } from './artist';
+import { IAlbum } from './album';
+import { ITrack } from './track';
+
+export interface IFavorites {
+  artists: IArtist[];
+  albums: IAlbum[];
+  tracks: ITrack[];
+}
+
+export enum FavoritesEnum {
+  Artists = 'artists',
+  Albums = 'albums',
+  Tracks = 'tracks',
 }
