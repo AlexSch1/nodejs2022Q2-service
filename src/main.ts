@@ -7,6 +7,7 @@ import { dirname, join } from 'path';
 import { SwaggerModule } from '@nestjs/swagger';
 import { parse } from 'yaml';
 import { MyLoggerService } from './shared/logging/my-logger.service';
+import {HttpExceptionFilter} from "./core/http-exception-filter";
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -27,6 +28,8 @@ async function bootstrap() {
   SwaggerModule.setup('doc', app, document);
 
   app.useLogger(app.get(MyLoggerService));
+
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(ENV.PORT);
 
