@@ -3,8 +3,6 @@ version: '3'
 services:
   nodeapp:
     image: alexdv/nodejs2022q2:node
-    env_file:
-      - .env
     ports:
       - ${PORT}:${PORT}
     volumes:
