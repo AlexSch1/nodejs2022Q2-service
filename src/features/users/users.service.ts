@@ -5,6 +5,7 @@ import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserDto } from './dto/user.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -25,6 +26,12 @@ export class UsersService {
     return users.map((u) => u.toResponse());
   }
 
+  async findByLogin(login: string) {
+    const user = await this.usersRepository.findOne({ where: { login } });
+
+    return user;
+  }
+
   async findOne(id: string) {
     return this.usersRepository.findOne({ where: { id } });
   }
@@ -34,7 +41,7 @@ export class UsersService {
 
     if (!user) return;
 
-    if (user.password !== updateUserDto.oldPassword) {
+    if (!(await bcrypt.compare(updateUserDto.oldPassword, user.password))) {
       throw new HttpException('Incorrect oldPassword', HttpStatus.FORBIDDEN);
     }
 

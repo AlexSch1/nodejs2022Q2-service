@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -7,6 +8,7 @@ import {
   VersionColumn,
 } from 'typeorm';
 import { UserDto } from '../dto/user.dto';
+import { genSaltSync, hashSync } from 'bcryptjs';
 
 @Entity({ name: 'user' })
 export class UserEntity {
@@ -16,17 +18,42 @@ export class UserEntity {
   @VersionColumn()
   version: number;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @CreateDateColumn({
+    transformer: {
+      from: (value: Date) => value.getTime(),
+      to: (value: Date) => value,
+    },
+  })
+  createdAt: number;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @UpdateDateColumn({
+    transformer: {
+      from: (value: Date) => value.getTime(),
+      to: (value: Date) => value,
+    },
+  })
+  updatedAt: number;
 
   @Column('varchar')
   login: string;
 
   @Column('varchar')
   password: string;
+
+  @BeforeInsert()
+  async hashPassword() {
+    const salt = genSaltSync(10);
+
+    let passwordDecoded;
+
+    if (this.password) {
+      passwordDecoded = hashSync(this.password, salt);
+    } else {
+      passwordDecoded = this.password;
+    }
+
+    this.password = passwordDecoded;
+  }
 
   toResponse(): UserDto {
     const { password, ...userDto } = this;

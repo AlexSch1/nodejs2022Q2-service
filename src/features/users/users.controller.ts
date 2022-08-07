@@ -15,8 +15,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UuidGuard } from '../../shared/guards/uuid.guard';
-import { UserGuard } from '../../shared/guards/user.guard';
 import { UserDto } from './dto/user.dto';
+import { AuthGuard } from '../auth/auth-guard';
 
 @Controller('user')
 export class UsersController {
@@ -35,12 +35,13 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   async findAll() {
     return await this.usersService.findAll();
   }
 
   @Get(':id')
-  @UseGuards(UuidGuard, UserGuard)
+  @UseGuards(UuidGuard)
   async findOne(@Param('id') id: string): Promise<UserDto> {
     const user = await this.usersService.findOne(id);
 
@@ -51,7 +52,7 @@ export class UsersController {
   }
 
   @Put(':id')
-  @UseGuards(UuidGuard)
+  @UseGuards(UuidGuard, AuthGuard)
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -65,7 +66,7 @@ export class UsersController {
 
   @Delete(':id')
   @HttpCode(204)
-  @UseGuards(UuidGuard, UserGuard)
+  @UseGuards(UuidGuard)
   async remove(@Param('id') id: string): Promise<void> {
     if (!(await this.usersService.remove(id))) {
       throw new HttpException('User  not found', HttpStatus.NOT_FOUND);

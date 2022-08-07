@@ -3,8 +3,8 @@ export interface IUser {
   login: string;
   password: string;
   version: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export type IUserDto = Omit<IUser, 'id'>;
